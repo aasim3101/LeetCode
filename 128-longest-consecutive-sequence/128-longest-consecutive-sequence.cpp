@@ -5,20 +5,22 @@ public:
         if(n == 0){
             return 0;
         }
-        sort(nums.begin(), nums.end());
+        unordered_set<int> st;
+        for(int i=0; i<n; i++){
+            st.insert(nums[i]);
+        }
         int ans=1;
-        int i=0;
-        while(i < n){
-            int j=i+1;
-            int curr_ans=1;
-            while(j<n && nums[j]-nums[j-1]<=1){
-                if(nums[j]-nums[j-1] == 1){
-                    curr_ans++;
-                }
-                j++;
+        for(int i=0; i<n; i++){
+            if(st.find(nums[i] - 1) != st.end()){
+                continue;
+            }
+            int curr_ans=0;
+            int num=nums[i];
+            while(st.find(num) != st.end()){
+                curr_ans++;
+                num++;
             }
             ans=max(ans, curr_ans);
-            i=j;
         }
         return ans;
     }
