@@ -11,23 +11,19 @@
  */
 class Solution {
 public:
-    void inorder(TreeNode* node, vector<int> &vec){
+    bool check(TreeNode* node, char ch, TreeNode* par, pair<long long,long long> range){
         if(node == NULL){
-            return;
+            return true;
         }
-        inorder(node->left, vec);
-        vec.push_back(node->val);
-        inorder(node->right, vec);
+        if(node->val <= range.first || node->val >= range.second){
+            return false;
+        }
+        bool ans1,ans2;
+        ans1=check(node->left, ch, par, {range.first, node->val});
+        ans2=check(node->right, ch, par, {node->val, range.second});
+        return ans1 && ans2;
     }
     bool isValidBST(TreeNode* root) {
-        vector<int> vec;
-        inorder(root, vec);
-        int n=vec.size();
-        for(int i=1; i<n; i++){
-            if(vec[i] <= vec[i-1]){
-                return false;
-            }
-        }
-        return true;
+        return check(root->left, 'L', root, {-1000000000000, root->val}) && check(root->right, 'R', root, {root->val, 1000000000000});
     }
 };
