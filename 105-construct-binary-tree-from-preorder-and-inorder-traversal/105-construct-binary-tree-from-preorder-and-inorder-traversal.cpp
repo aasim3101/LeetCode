@@ -11,47 +11,23 @@
  */
 class Solution {
 public:
+    map<int,int> mp;
+    int ind=0;
     TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
-        TreeNode* root = new TreeNode(preorder[0]);
-        map<int,int> mp;
         int n=preorder.size();
         for(int i=0; i<n; i++){
-            mp[inorder[i]] = i;
+            mp[inorder[i]]=i;
         }
-        for(int i=1; i<n; i++){
-            TreeNode* curr_root=root;
-            TreeNode* temp = new TreeNode(0);
-            int value=curr_root->val;
-            if(mp[preorder[i]] < mp[value]){
-                temp=curr_root->left;
-            }
-            else{
-                temp=curr_root->right;
-            }
-            while(temp != NULL){
-                curr_root=temp;
-                value=curr_root->val;
-                if(mp[preorder[i]] < mp[value]){
-                    temp=curr_root->left;
-                }
-                else{
-                    temp=curr_root->right;
-                }
-            }
-            if(mp[preorder[i]] < mp[value]){
-               curr_root->left=new TreeNode(preorder[i]);
-            }
-            else{
-                curr_root->right = new TreeNode(preorder[i]);
-            }
+        return helper(preorder, 0, n-1);
+    }
+    TreeNode* helper(vector<int> &preorder, int left, int right){
+        if(left > right){
+            return NULL;
         }
+        int rootVal = preorder[ind++];
+        TreeNode* root = new TreeNode(rootVal);
+        root->left = helper(preorder, left, mp[rootVal]-1);
+        root->right = helper(preorder, mp[rootVal]+1, right);
         return root;
-        // TreeNode* root = new TreeNode(1);
-        // TreeNode* temp = root->left;
-        // if(temp == NULL){
-        //     cout<<"yes";
-        // }
-        // else cout<<"NO";
-        // return temp;
     }
 };
