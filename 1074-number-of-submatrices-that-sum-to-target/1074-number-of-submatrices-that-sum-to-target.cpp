@@ -8,16 +8,15 @@ public:
             }
         }
         int ans = 0;
+        map<int,int> mp;
         for(int colStart=0; colStart<m; colStart++){
             for(int colEnd=colStart; colEnd<m; colEnd++){
-                for(int rowStart=0; rowStart<n; rowStart++){
-                    int sum = 0;
-                    for(int rowEnd=rowStart; rowEnd<n; rowEnd++){
-                        sum += matrix[rowEnd][colEnd] - (colStart ? matrix[rowEnd][colStart-1] : 0);
-                        if(sum == target){
-                            ans++;
-                        }
-                    }
+                mp = {{0,1}};
+                int currSum = 0;
+                for(int row=0; row<n; row++){
+                    currSum += matrix[row][colEnd] - (colStart ? matrix[row][colStart-1] : 0);
+                    ans += mp[currSum - target];
+                    mp[currSum]++;
                 }
             }
         }
